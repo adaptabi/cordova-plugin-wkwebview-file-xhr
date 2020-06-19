@@ -1010,13 +1010,15 @@
       event.initEvent(type, false, false);
       ["total", "totalSize", "loaded", "position"].forEach(function (propName)
       {
-        Object.defineProperty(event, propName, {value: total});
+          if(propName == "loaded" || propName == "total"){
+            Object.defineProperty(event, propName, {value: loaded || total});              
+          }
+          else{
+              Object.defineProperty(event, propName, {value: total});
+          }
       });
       Object.defineProperty(event, "lengthComputable", {value: total === 0 ? false : true});
-      if(loaded){
-        event.loaded = loaded;
-        event.position = position; 
-      }
+     
       this.upload.dispatchEvent(event);
     }.bind(this._context);
   };
