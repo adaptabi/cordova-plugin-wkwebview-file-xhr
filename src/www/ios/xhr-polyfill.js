@@ -774,8 +774,9 @@
 
   DelegateHandler._uploadProgressEventRelay = function (reqContext, event)
   {
-    var respSize = isNaN(event.totalSize) ? 0 : event.totalSize;
-    reqContext.dispatchUploadProgressEvent(event.type, respSize);
+    var total = isNaN(event.totalSize) ? 0 : event.totalSize;
+    var loaded = isNaN(event.position || event.loaded) ? 0 : (event.position || event.loaded);
+    reqContext.dispatchUploadProgressEvent(event.type, total, loaded);
   };
 
   DelegateHandler._readystatechangeEventRelay = function (reqContext, delegate, event)
@@ -996,23 +997,26 @@
       req.dispatchEvent(event);
     }.bind(this._context, this);
 
-    this._context.dispatchUploadProgressEvent = function (type, reqSize)
+    this._context.dispatchUploadProgressEvent = function (type, total, loaded)
     {
       // no body sent on a GET request
       if (this.method === "GET")
         return;
 
-      if (isNaN(reqSize))
-        reqSize = 0;
+      if (isNaN(total))
+        total = 0;
 
       var event = document.createEvent("Event");
       event.initEvent(type, false, false);
       ["total", "totalSize", "loaded", "position"].forEach(function (propName)
       {
-        Object.defineProperty(event, propName, {value: reqSize});
+        Object.defineProperty(event, propName, {value: total});
       });
-      Object.defineProperty(event, "lengthComputable", {value: reqSize === 0 ? false : true});
-
+      Object.defineProperty(event, "lengthComputable", {value: total === 0 ? false : true});
+      if(loaded){
+        event.loaded = loaded;
+        event.position = position; 
+      }
       this.upload.dispatchEvent(event);
     }.bind(this._context);
   };
