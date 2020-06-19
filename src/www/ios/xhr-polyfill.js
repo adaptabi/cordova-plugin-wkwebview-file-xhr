@@ -950,18 +950,23 @@
     var lset = listeners[type] ? listeners[type] : [];
 
     // call property listeners
-    var listener = this._context[["on", type].join("")];
-    if (listener)
-    {
-      try
-      {
-        listener.call(this, event);
-      }
-      catch (e)
-      {
-        console.log("xhr-polyfill.js - exception delivering upload event %o\n%o", event, e);
-      }
+    var contextListener = this._context[["on", type].join("")];
+    if(contextListener){
+        lset.push(contextListener);
     }
+    lset.map(listener => {
+        if (listener)
+        {
+          try
+          {
+            listener.call(this, event);
+          }
+          catch (e)
+          {
+            console.log("xhr-polyfill.js - exception delivering upload event %o\n%o", event, e);
+          }
+        }
+    });   
   };
 
   /** @type {?} */
