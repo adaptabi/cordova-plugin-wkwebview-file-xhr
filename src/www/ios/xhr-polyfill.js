@@ -1012,7 +1012,7 @@
       {
           if(propName == "loaded" || propName == "total"){
               let loadedVal = loaded >= 0 ? loaded : total;
-            Object.defineProperty(event, propName, {value: lloadedVal});              
+            Object.defineProperty(event, propName, {value: loadedVal});              
           }
           else{
               Object.defineProperty(event, propName, {value: total});
