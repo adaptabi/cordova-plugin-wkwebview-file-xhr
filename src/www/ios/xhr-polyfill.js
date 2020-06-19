@@ -1015,7 +1015,7 @@
       event.initEvent(type, false, false);
       ["total", "totalSize", "loaded", "position"].forEach(function (propName)
       {
-          if(propName == "loaded" || propName == "total"){
+          if(propName == "loaded"){
               let loadedVal = loaded >= 0 ? loaded : total;
             Object.defineProperty(event, propName, {value: loadedVal});              
           }
