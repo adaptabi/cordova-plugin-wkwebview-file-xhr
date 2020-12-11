@@ -605,7 +605,7 @@
       var reqPayLoad = {id: id, callback: "nativeXHRResponse",
         url: HttpHandler._resolveUri(reqContext.url), method: reqContext.method,
         headers: reqContext.requestHeaders,
-        body: bodyAsBase64String, timeout: timeoutInSecs};
+        body: bodyAsBase64String, timeout: timeoutInSecs, withCredentials: true};
       
       if (this._isTraceLoggingEnabled())
         console.log("xhr-polyfill.js - native XHR Request:\n %o", reqPayLoad);
