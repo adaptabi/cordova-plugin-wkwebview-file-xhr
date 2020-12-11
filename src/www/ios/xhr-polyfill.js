@@ -974,7 +974,7 @@
   window.XMLHttpRequest = function ()
   {
     this._context = {delegate: null, requestHeaders: {}, responseHeaders: {},
-      listeners: {}, readyState: 0, responseType: "text", withCredentials: false,
+      listeners: {}, readyState: 0, responseType: "text", withCredentials: true,
       upload: new _XMLHttpRequestUpload(), status: 0};
 
     this._context.dispatchProgressEvent = function (req, type, respSize)
@@ -1015,7 +1015,7 @@
       event.initEvent(type, false, false);
       ["total", "totalSize", "loaded", "position"].forEach(function (propName)
       {
-          if(propName == "loaded"){
+        if (propName == "loaded" || propName == "total"){
               let loadedVal = loaded >= 0 ? loaded : total;
             Object.defineProperty(event, propName, {value: loadedVal});              
           }
